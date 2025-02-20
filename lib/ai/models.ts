@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { openai, createOpenAI } from '@ai-sdk/openai';
 // import { fireworks } from '@ai-sdk/fireworks';
 import { createDeepSeek } from "@ai-sdk/deepseek";
 import {
@@ -6,6 +6,11 @@ import {
   // extractReasoningMiddleware,
   // wrapLanguageModel,
 } from 'ai';
+
+export const customOpenAI = createOpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.OPENAI_API_BASE,
+});
 
 export const customDeepSeek = createDeepSeek({
   apiKey: process.env.DASHSCOPE_API_KEY,
@@ -19,19 +24,19 @@ export const DEFAULT_CHAT_MODEL: string = 'chat-model-small';
 
 export const myProvider = customProvider({
   languageModels: {
-    'chat-model-small': openai('gpt-4o-mini'),
-    'chat-model-large': openai('gpt-4o'),
+    'chat-model-small': customOpenAI('gpt-4o-mini'),
+    'chat-model-large': customOpenAI('gpt-4o'),
     "chat-model-reasoning": customDeepSeek("deepseek-r1"),
     // 'chat-model-reasoning': wrapLanguageModel({
     //   model: fireworks('accounts/fireworks/models/deepseek-r1'),
     //   middleware: extractReasoningMiddleware({ tagName: 'think' }),
     // }),
-    'title-model': openai('gpt-4-turbo'),
-    'artifact-model': openai('gpt-4o-mini'),
+    'title-model': customOpenAI('gpt-4-turbo'),
+    'artifact-model': customOpenAI('gpt-4o-mini'),
   },
   imageModels: {
-    'small-model': openai.image('dall-e-2'),
-    'large-model': openai.image('dall-e-3'),
+    'small-model': customOpenAI.image('dall-e-2'),
+    'large-model': customOpenAI.image('dall-e-3'),
   },
 });
 
@@ -43,17 +48,17 @@ interface ChatModel {
 
 export const chatModels: Array<ChatModel> = [
   {
-    id: 'gpt-4o-mini',
-    name: 'Small model',
+    id: 'chat-model-small',
+    name: 'gpt-4o-mini',
     description: 'Small model for fast, lightweight tasks',
   },
   {
-    id: 'gpt-4o',
-    name: 'Large model',
+    id: 'chat-model-large',
+    name: 'gpt-4o',
     description: 'Large model for complex, multi-step tasks',
   },
   {
-    id: 'deepseek-r1',
+    id: 'chat-model-reasoning',
     name: 'deepseek-r1满血版',
     description: 'Uses advanced reasoning',
   },
