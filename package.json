@@ -18,6 +18,7 @@
     "db:up": "drizzle-kit up"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^1.1.17",
     "@ai-sdk/deepseek": "^0.1.11",
     "@ai-sdk/fireworks": "^0.1.8",
     "@ai-sdk/openai": "1.1.9",
